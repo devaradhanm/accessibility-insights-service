@@ -14,6 +14,33 @@
     tslib "^1.9.3"
     url-parse "^1.4.7"
 
+"@azure/core-asynciterator-polyfill@^1.0.0-preview.1":
+  version "1.0.0-preview.1"
+  resolved "https://registry.yarnpkg.com/@azure/core-asynciterator-polyfill/-/core-asynciterator-polyfill-1.0.0-preview.1.tgz#ad7c726cfd73c946dbfbc3e485338ccf678fc75a"
+  integrity sha512-hMp0y+j/odkAyTa5TYewn4hUlFdEe3sR9uTd2Oq+se61RtuDsqM7UWrNNlyylPyjIENSZHJVWN7jte/jvvMN2Q==
+
+"@azure/core-http@^1.0.0-preview.1":
+  version "1.0.0-preview.1"
+  resolved "https://registry.yarnpkg.com/@azure/core-http/-/core-http-1.0.0-preview.1.tgz#e88b0a0d37847d13ea74b47fd5b58d1e2cedacb7"
+  integrity sha512-/1QsA8WMl67I8HM5d8Z5kLmw8WU8GLBZekckRa69lT6NmU5nQ9IgCM/IwS3mdoljnv4TFgiGK8cb5x3wCJEssA==
+  dependencies:
+    "@types/tunnel" "^0.0.0"
+    axios "^0.19.0"
+    form-data "^2.3.2"
+    process "^0.11.10"
+    tough-cookie "^2.4.3"
+    tslib "^1.9.3"
+    tunnel "0.0.6"
+    uuid "^3.3.2"
+    xml2js "^0.4.19"
+
+"@azure/core-paging@^1.0.0-preview.1":
+  version "1.0.0-preview.1"
+  resolved "https://registry.yarnpkg.com/@azure/core-paging/-/core-paging-1.0.0-preview.1.tgz#b7762a5a5d97069bcb8b7ced824848124faa1085"
+  integrity sha512-mZHkadyAbhV1+brHEsWICnURW6E72D2HReM+8MWDn5oVJdlxD51w14PeqsOZC4UDYv4x2Eww5+PFRTEOrNB1Uw==
+  dependencies:
+    "@azure/core-asynciterator-polyfill" "^1.0.0-preview.1"
+
 "@azure/cosmos@^2.1.2":
   version "2.1.7"
   resolved "https://registry.yarnpkg.com/@azure/cosmos/-/cosmos-2.1.7.tgz#8fcd609417a77603b0007a519ef1b24690bfa9d4"
@@ -26,6 +53,18 @@
     stream-http "^2.8.3"
     tslib "^1.9.3"
     tunnel "0.0.5"
+
+"@azure/identity@^1.0.0-preview.1":
+  version "1.0.0-preview.1"
+  resolved "https://registry.yarnpkg.com/@azure/identity/-/identity-1.0.0-preview.1.tgz#a33315cf12367b631ab34f4ef08b6e3b0073fc78"
+  integrity sha512-AM/OXOVojj+A850c3Un5RTJSBh2cugYZqbicW2TzsuQAjDaAh8DnBseW1x9BhfZQ/RWk2Vh/GJ3SHK0X0Ab7dA==
+  dependencies:
+    "@azure/core-http" "^1.0.0-preview.1"
+    events "^3.0.0"
+    jws "~3.2.2"
+    qs "6.7.0"
+    tslib "^1.9.3"
+    uuid "^3.3.2"
 
 "@azure/keyvault@^0.1.0":
   version "0.1.0"
@@ -71,6 +110,16 @@
     "@azure/ms-rest-azure-env" "^1.1.2"
     "@azure/ms-rest-js" "^1.8.6"
     adal-node "^0.1.28"
+
+"@azure/storage-blob@12.0.0-preview.1":
+  version "12.0.0-preview.1"
+  resolved "https://registry.yarnpkg.com/@azure/storage-blob/-/storage-blob-12.0.0-preview.1.tgz#ad9d88f7a699cf1743b81d5ae20811a6aabbef9c"
+  integrity sha512-/TfRMTyxndWxVgndHVTMshZt85eXXTVILOUXICTXX3ulBWx9Ogyb477evg7JLkiQhBMwVL5CuNmQx5TEXpZWpA==
+  dependencies:
+    "@azure/core-http" "^1.0.0-preview.1"
+    "@azure/core-paging" "^1.0.0-preview.1"
+    events "^3.0.0"
+    tslib "^1.9.3"
 
 "@azure/storage-queue@^10.1.0":
   version "10.1.0"
@@ -1300,7 +1349,7 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
   integrity sha512-l42BggppR6zLmpfU6fq9HEa2oGPEI8yrSPL3GITjfRInppYFahObbIQOQK3UGxEnyQpltZLaPe75046NOZQikw==
 
-"@types/tunnel@0.0.0":
+"@types/tunnel@0.0.0", "@types/tunnel@^0.0.0":
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/@types/tunnel/-/tunnel-0.0.0.tgz#c2a42943ee63c90652a5557b8c4e56cda77f944e"
   integrity sha512-FGDp0iBRiBdPjOgjJmn1NH0KDLN+Z8fRmo+9J7XGBhubq1DPrGrbmG4UTlGzrpbCpesMqD0sWkzi27EYkOMHyg==
@@ -1849,9 +1898,9 @@ aws4@^1.6.0, aws4@^1.8.0:
   integrity sha512-ReZxvNHIOv88FlT7rxcXIIC0fPt4KZqZbOlivyWtXLt8ESx84zd3kMC6iK5jVeS2qt+g7ftS7ye4fi06X5rtRQ==
 
 axe-core@3.2.2, axe-core@^3.1.2, axe-core@^3.2.2:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-3.3.0.tgz#3b32d7e54390d89ff4891b20394d33ad7a192776"
-  integrity sha512-54XaTd2VB7A6iBnXMUG2LnBOI7aRbnrVxC5Tz+rVUwYl9MX/cIJc/Ll32YUoFIE/e9UKWMZoQenQu9dFrQyZCg==
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-3.3.1.tgz#3d1fa78cca8ead1b78c350581501e4e37b97b826"
+  integrity sha512-gw1T0JptHPF4AdLLqE8yQq3Z7YvsYkpFmFWd84r6hnq/QoKRr8icYHFumhE7wYl5TVIHgVlchMyJsAYh0CfwCQ==
 
 axe-puppeteer@^1.0.0:
   version "1.0.0"
@@ -5194,7 +5243,7 @@ jwa@^1.4.1:
     ecdsa-sig-formatter "1.0.11"
     safe-buffer "^5.0.1"
 
-jws@3.x.x:
+jws@3.x.x, jws@~3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/jws/-/jws-3.2.2.tgz#001099f3639468c9414000e99995fa52fb478304"
   integrity sha512-YHlZCB6lMTllWDtSPHz/ZXTsi8S00usEV6v1tjq8tOUZzw7DpSDWVXjXDre6ed1w/pd495ODpHZYSdkRTsa0HA==
@@ -6722,9 +6771,9 @@ punycode@^2.1.0, punycode@^2.1.1:
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
 puppeteer@1.5.0, puppeteer@^1.12.2, puppeteer@^1.18.1:
-  version "1.18.1"
-  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-1.18.1.tgz#4a66f3bdab01115ededf70443ec904c99917a815"
-  integrity sha512-luUy0HPSuWPsPZ1wAp6NinE0zgetWtudf5zwZ6dHjMWfYpTQcmKveFRox7VBNhQ98OjNA9PQ9PzQyX8k/KrxTg==
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-1.19.0.tgz#e3b7b448c2c97933517078d7a2c53687361bebea"
+  integrity sha512-2S6E6ygpoqcECaagDbBopoSOPDv0pAZvTbnBgUY+6hq0/XDFDOLEMNlHF/SKJlzcaZ9ckiKjKDuueWI3FN/WXw==
   dependencies:
     debug "^4.1.0"
     extract-zip "^1.6.6"
@@ -6739,6 +6788,11 @@ q@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
+
+qs@6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
+  integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
 
 qs@~6.5.1, qs@~6.5.2:
   version "6.5.2"
