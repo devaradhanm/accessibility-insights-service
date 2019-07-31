@@ -19,7 +19,7 @@ export class Batch {
     private readonly jobTasks: Map<string, JobTask> = new Map();
 
     public constructor(
-        @inject(ServiceConfiguration) private readonly serviceConfig: ServiceConfiguration,
+        // @inject(ServiceConfiguration) private readonly serviceConfig: ServiceConfiguration,
         @inject(BatchConfig) private readonly config: BatchConfig,
         @inject(RunnerTaskConfig) private readonly runnerTaskConfig: RunnerTaskConfig,
         @inject(jobManagerIocTypeNames.BatchServiceClientProvider) private readonly batchClientProvider: BatchServiceClientProvider,
@@ -61,33 +61,18 @@ export class Batch {
         return serviceJobId;
     }
 
-    public async createTasks(jobId: string, messages: Message[]): Promise<JobTask[]> {
+    public async createTasks(jobId: string): Promise<JobTask[]> {
         const taskAddParameters: BatchServiceModels.TaskAddParameter[] = [];
         const maxTaskDurationInMinutes = await this.getMaxTaskDurationInMinutes();
-
-        messages.forEach(message => {
-            const jobTask = new JobTask(message.messageId);
+        const taskCount = 20 * 8;
+        for (let taskPos = 0; taskPos < taskCount; taskPos += 1) {
+            const jobTask = new JobTask(`${Date.now()}-taskPos`);
             this.jobTasks.set(jobTask.id, jobTask);
-            const taskAddParameter = this.getTaskAddParameter(jobTask.id, message.messageText, maxTaskDurationInMinutes);
+            const taskAddParameter = this.getTaskAddParameter(jobTask.id, maxTaskDurationInMinutes);
             taskAddParameters.push(taskAddParameter);
-        });
-
-        if (taskAddParameters.length > 0) {
-            const client = await this.batchClientProvider();
-            const taskAddCollectionResult = await client.task.addCollection(jobId, taskAddParameters);
-            taskAddCollectionResult.value.forEach(taskAddResult => {
-                if (/success/i.test(taskAddResult.status)) {
-                    this.jobTasks.get(taskAddResult.taskId).state = JobTaskState.queued;
-                    this.logger.logInfo(`New task ${taskAddResult.taskId} added to the job ${jobId}.`);
-                } else {
-                    this.jobTasks.get(taskAddResult.taskId).state = JobTaskState.failed;
-                    this.jobTasks.get(taskAddResult.taskId).error = taskAddResult.error.message.value;
-                    this.logger.logError(`An error occurred while adding new task ${JSON.stringify(taskAddResult)} to the job ${jobId}.`);
-                }
-            });
-        } else {
-            this.logger.logInfo(`No new tasks added to the job ${jobId}.`);
         }
+
+        await this.addTasks(jobId, taskAddParameters);
 
         return Array.from(this.jobTasks.values());
     }
@@ -133,6 +118,48 @@ export class Batch {
         return Array.from(this.jobTasks.values());
     }
 
+    private async addTasks(jobId: string, allTasks: BatchServiceModels.TaskAddParameter[]): Promise<void> {
+        const chunkSize = 50;
+
+        if (allTasks.length > 0) {
+            const chunks = this.getChunks(allTasks, chunkSize);
+            const client = await this.batchClientProvider();
+
+            const taskAddPromises = chunks.map(async taskAddParameters => {
+                if (taskAddParameters.length > 0) {
+                    const taskAddCollectionResult = await client.task.addCollection(jobId, taskAddParameters);
+
+                    taskAddCollectionResult.value.forEach(taskAddResult => {
+                        if (/success/i.test(taskAddResult.status)) {
+                            this.jobTasks.get(taskAddResult.taskId).state = JobTaskState.queued;
+                            this.logger.logInfo(`New task ${taskAddResult.taskId} added to the job ${jobId}.`);
+                        } else {
+                            this.jobTasks.get(taskAddResult.taskId).state = JobTaskState.failed;
+                            this.jobTasks.get(taskAddResult.taskId).error = taskAddResult.error.message.value;
+                            this.logger.logError(
+                                `An error occurred while adding new task ${JSON.stringify(taskAddResult)} to the job ${jobId}.`,
+                            );
+                        }
+                    });
+                }
+            });
+            await Promise.all(taskAddPromises);
+        } else {
+            this.logger.logInfo(`No new tasks added to the job ${jobId}.`);
+        }
+    }
+
+    private getChunks<T>(allItems: T[], chunkSize: number): T[][] {
+        const chunks: T[][] = [];
+        const length = allItems.length;
+
+        for (let chunkPos = 0; chunkPos < length; chunkPos += chunkSize) {
+            chunks.push(allItems.slice(chunkPos, chunkPos + chunkSize));
+        }
+
+        return chunks;
+    }
+
     private async getTasksStateNext(nextPageLink: string): Promise<string> {
         if (!_.isNil(nextPageLink)) {
             const client = await this.batchClientProvider();
@@ -155,13 +182,8 @@ export class Batch {
         });
     }
 
-    private getTaskAddParameter(
-        jobTaskId: string,
-        messageText: string,
-        maxTaskDurationInMinutes: number,
-    ): BatchServiceModels.TaskAddParameter {
-        const message = JSON.parse(messageText);
-        const commandLine = this.runnerTaskConfig.getCommandLine(message);
+    private getTaskAddParameter(jobTaskId: string, maxTaskDurationInMinutes: number): BatchServiceModels.TaskAddParameter {
+        const commandLine = this.runnerTaskConfig.getCommandLine();
 
         return {
             id: jobTaskId,
@@ -173,8 +195,8 @@ export class Batch {
     }
 
     private async getMaxTaskDurationInMinutes(): Promise<number> {
-        const commonConfig = await this.serviceConfig.getConfigValue('taskConfig');
+        //    const commonConfig = await this.serviceConfig.getConfigValue('taskConfig');
 
-        return commonConfig.taskTimeoutInMinutes;
+        return 30;
     }
 }

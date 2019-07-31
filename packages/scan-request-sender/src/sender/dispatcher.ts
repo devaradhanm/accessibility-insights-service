@@ -36,6 +36,7 @@ export class Dispatcher {
             do {
                 const response: CosmosOperationResponse<WebsitePage[]> = await this.pageDocumentProvider.getReadyToScanPages(
                     continuationToken,
+                    10,
                 );
                 client.ensureSuccessStatusCode(response);
                 continuationToken = response.continuationToken;

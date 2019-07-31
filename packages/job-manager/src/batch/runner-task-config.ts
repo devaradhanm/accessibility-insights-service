@@ -8,8 +8,7 @@ import { loggerTypes } from 'logger';
 
 @injectable()
 export class RunnerTaskConfig {
-    public readonly commandLineTemplate: string =
-        '/bin/bash -c \'start-runner.sh "%websiteId%" "%name%" "%baseUrl%" "%url%" "%serviceTreeId%"\'';
+    public readonly commandLineTemplate: string = "/bin/bash -c 'start-runner.sh'";
 
     private environmentSettings: BatchServiceModels.EnvironmentSetting[];
     private resourceFiles: BatchServiceModels.ResourceFile[];
@@ -27,9 +26,9 @@ export class RunnerTaskConfig {
     constructor(@inject(loggerTypes.Process) private readonly currentProcess: typeof process) {}
 
     // tslint:disable-next-line: no-any
-    public getCommandLine(data: any): string {
+    public getCommandLine(): string {
         // tslint:disable-next-line: no-unsafe-any
-        return this.commandLineTemplate.replace(/%(\w*)%/g, (match, key) => (data.hasOwnProperty(key) ? data[key] : ''));
+        return this.commandLineTemplate;
     }
 
     public getEnvironmentSettings(): BatchServiceModels.EnvironmentSetting[] {
@@ -56,6 +55,9 @@ export class RunnerTaskConfig {
             this.resourceFiles = [
                 {
                     autoStorageContainerName: this.currentProcess.env.RUNNER_SCRIPTS_CONTAINER_NAME,
+                },
+                {
+                    autoStorageContainerName: 'runtime-configuration',
                 },
             ];
         }

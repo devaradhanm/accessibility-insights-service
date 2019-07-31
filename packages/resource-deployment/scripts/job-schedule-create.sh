@@ -16,6 +16,10 @@ parsedScanReqScheduleFileName="scan-req-schedule.generated.template.json"
 urlScanScheduleJobName="url-scan-schedule"
 parsedUrlScanScheduleFileName="url-scan-schedule.generated.template.json"
 
+if [[ -z $templatesFolder ]]; then
+    templatesFolder="${0%/*}/../templates/"
+fi
+
 adjustJob() {
     local jobName=$1
     local jobTemplate=$2

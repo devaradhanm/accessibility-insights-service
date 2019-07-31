@@ -129,7 +129,7 @@ export class PageDocumentProvider {
     }
 
     private getPageScanningCondition(website: Website): string {
-        return website.deepScanningEnabled ? '1=1' : 'c.basePage = true';
+        return website.deepScanningEnabled ? '1=1' : '1=1'; //'c.basePage = true';
     }
 
     private async getScanConfig(): Promise<ScanRunTimeConfig> {

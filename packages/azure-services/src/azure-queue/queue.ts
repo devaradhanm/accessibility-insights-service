@@ -21,8 +21,8 @@ export class Queue {
         @inject(Logger) private readonly logger: Logger,
     ) {}
 
-    public async getMessages(queue: string = this.scanQueue): Promise<Message[]> {
-        const maxDequeueCount = 2;
+    public async getMessages(queue: string = this.scanQueue, messageCount: number = 32): Promise<Message[]> {
+        const maxDequeueCount = 3;
         const messages: Message[] = [];
 
         const queueURL = await this.getQueueURL(queue);
@@ -31,7 +31,7 @@ export class Queue {
         await this.ensureQueueExists(queueURL);
         await this.ensureQueueExists(deadQueueURL);
 
-        const serverMessages = await this.getQueueMessages(queueURL);
+        const serverMessages = await this.getQueueMessages(queueURL, messageCount);
         for (const serverMessage of serverMessages) {
             if (serverMessage.dequeueCount > maxDequeueCount) {
                 await this.moveToDeadQueue(queueURL, deadQueueURL, serverMessage);
@@ -84,9 +84,9 @@ export class Queue {
         await messageIdURL.delete(Aborter.none, popReceipt);
     }
 
-    private async getQueueMessages(queueURL: QueueURL): Promise<Models.DequeuedMessageItem[]> {
+    private async getQueueMessages(queueURL: QueueURL, messageCount: number): Promise<Models.DequeuedMessageItem[]> {
         const requestOptions: Models.MessagesDequeueOptionalParams = {
-            numberOfMessages: 32, // Maximum number of messages to retrieve from queue: 32
+            numberOfMessages: messageCount, // Maximum number of messages to retrieve from queue: 32
             visibilitytimeout: 300, // Message visibility timeout in seconds
         };
 
