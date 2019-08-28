@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 import 'reflect-metadata';
 
-import { StorageClient } from 'azure-services';
+import { CosmosContainerClient } from 'azure-services';
 import { ServiceConfiguration } from 'common';
 import { Runner } from './runner/runner';
 import { setupRunnerContainer } from './setup-runner-container';

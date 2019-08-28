@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 import 'reflect-metadata';
 
-import { CosmosOperationResponse, StorageClient } from 'azure-services';
+import { CosmosOperationResponse, CosmosContainerClient } from 'azure-services';
 import { Logger } from 'logger';
 import { IMock, Mock, Times } from 'typemoq';
 // tslint:disable: no-unsafe-any
@@ -11,17 +11,17 @@ import { SeedSource } from './seed-source';
 
 describe('Scan Source', () => {
     let testSubject: SeedSource;
-    let storageClientMock: IMock<StorageClient>;
+    let cosmosContainerClientMock: IMock<CosmosContainerClient>;
     let loggerMock: IMock<Logger>;
 
     beforeEach(() => {
-        storageClientMock = Mock.ofType<StorageClient>();
-        storageClientMock
+        cosmosContainerClientMock = Mock.ofType<CosmosContainerClient>();
+        cosmosContainerClientMock
             .setup(async o => o.readAllDocument<ScanRequest>())
             .returns(async () => Promise.resolve(getScanRequestTestData()))
             .verifiable(Times.once());
         loggerMock = Mock.ofType(Logger);
-        testSubject = new SeedSource(storageClientMock.object, loggerMock.object);
+        testSubject = new SeedSource(cosmosContainerClientMock.object, loggerMock.object);
     });
     it('get websites to scan', async () => {
         const websites: WebSite[] = await testSubject.getWebSites();
