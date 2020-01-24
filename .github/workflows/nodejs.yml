@@ -24,6 +24,12 @@ jobs:
       with:
         token: ${{secrets.github_token}}     
         
+    - name: Invoking my docker action
+      id: hello
+      uses: devaradhanm/hello-world-docker-action
+      with:
+        who-to-greet: 'AdaCat using docker container!'
+        
     - name: Get yarn cache
       id: yarn-cache
       run: echo "::set-output name=dir::$(yarn cache dir)"
