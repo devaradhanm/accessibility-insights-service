@@ -23,7 +23,12 @@ jobs:
       uses: einaregilsson/build-number@v2 
       with:
         token: ${{secrets.github_token}}     
-        
+    
+    - uses: devaradhanm/hello-world-javascript-action@v1
+      name: invoking my action
+      with:
+        who-to-greet: Ada cat!
+      
     - name: Get yarn cache
       id: yarn-cache
       run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -55,3 +60,5 @@ jobs:
     
     - name: test
       run: yarn test --ci --coverage
+      env:
+        NODE_OPTIONS: --max_old_space_size=4096
