@@ -11,6 +11,7 @@ This project can be run in an Azure environment and can be set up easily using t
 
 ## Building the code
 
+
 ### 1. Clone the repository
 
 -   Clone the repository using one of the following commands
