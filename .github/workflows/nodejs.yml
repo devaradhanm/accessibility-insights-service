@@ -26,7 +26,7 @@ jobs:
         
     - name: Invoking my docker action
       id: hello
-      uses: devaradhanm/hello-world-docker-action
+      uses: devaradhanm/hello-world-docker-action@master
       with:
         who-to-greet: 'AdaCat using docker container!'
         
