@@ -24,7 +24,7 @@ jobs:
       with:
         token: ${{secrets.github_token}}     
     
-    - uses: devaradhanm/hello-world-javascript-action@v1
+    - uses: devaradhanm/hello-world-javascript-action@master
       name: invoking my action
       with:
         who-to-greet: Ada cat!
