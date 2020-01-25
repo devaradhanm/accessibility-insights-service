@@ -25,7 +25,7 @@ jobs:
         token: ${{secrets.github_token}}     
         
     - name: Invoking my docker action
-      id: hello
+      id: docker-action
       uses: devaradhanm/hello-world-docker-action@master
       with:
         who-to-greet: 'AdaCat using docker container!'
