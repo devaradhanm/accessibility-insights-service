@@ -208,6 +208,10 @@ export class CosmosClientWrapper {
         }
     }
 
+    private deleteItem2(): string {
+        return 'test-coverage';
+    }
+    
     private async getContainer(dbName: string, collectionName: string): Promise<cosmos.Container> {
         const db = await this.getDatabase(dbName);
 
