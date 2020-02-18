@@ -61,6 +61,10 @@ export class PoolLoadGenerator {
     public setLastTasksIncrementCount(lastTasksIncrementCount: number): void {
         this.lastTasksIncrementCount = lastTasksIncrementCount;
     }
+    
+    public setLastTasksIncrementCount2(lastTasksIncrementCount: number): void {
+        this.lastTasksIncrementCount = lastTasksIncrementCount;
+    }
 
     private async calculateTasksIncrementCount(poolMetricsInfo: PoolMetricsInfo): Promise<void> {
         if (this.lastTasksIncrementCount === undefined) {
