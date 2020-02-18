@@ -22,8 +22,7 @@ jobs:
     - name: Generate build number
       uses: einaregilsson/build-number@v2 
       with:
-        token: ${{
-        ts.github_token}}     
+        token: ${{ secrets.GITHUB_TOKEN}}     
         
     - name: Get yarn cache
       id: yarn-cache
