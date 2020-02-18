@@ -22,7 +22,8 @@ jobs:
     - name: Generate build number
       uses: einaregilsson/build-number@v2 
       with:
-        token: ${{secrets.github_token}}     
+        token: ${{
+        ts.github_token}}     
         
     - name: Get yarn cache
       id: yarn-cache
@@ -38,23 +39,13 @@ jobs:
     - name: install dependencies
       run: yarn install --frozen-lockfile
     
-    - name: install
-      uses: ianwalter/puppeteer@v2.0.0
-      with:
-          args: yarn install
-    
-    - name: install
-      uses: ianwalter/puppeteer@v2.0.0
-      with:
-          args: yarn teste2e
-      
-    - name: Upload reports
-      uses: actions/upload-artifact@v1.0.0
-      with:
-       # Artifact name
-       name: reports
-       # Directory containing files to upload
-       path: ${{ github.workspace }}/packages/cli/src/scanner/reports
+#     - name: Upload reports
+#       uses: actions/upload-artifact@v1.0.0
+#       with:
+#        # Artifact name
+#        name: reports
+#        # Directory containing files to upload
+#        path: ${{ github.workspace }}/packages/cli/src/scanner/reports
     
 #     - name: check formatting
 #       run: yarn format-check
@@ -65,11 +56,17 @@ jobs:
 #     - name: clean
 #       run: yarn clean
     
-#     - name: build
-#       run: yarn build -- -- --env.version=$BUILD_NUMBER
+    - name: build
+      run: yarn build -- -- --env.version=$BUILD_NUMBER
     
 #     - name: run linter
 #       run: yarn lint
     
-#     - name: test
-#       run: yarn test --ci --coverage
+    - name: test
+      run: yarn test --ci --coverage
+    
+    - name: Codecov
+      uses: codecov/codecov-action@v1.0.5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+    
